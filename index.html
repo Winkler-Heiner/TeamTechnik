@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wochen‑Agenda</title>
+  <title>Wochen-Agenda</title>
   <style>
-    html,body { height:100%; margin:0; background:#000; }
+    html, body { height:100%; margin:0; background:#000; }
     .container{
       width:100%;
       height:100%;
@@ -22,14 +22,51 @@
       box-shadow:0 6px 30px rgba(0,0,0,0.6);
       display:block;
     }
-    .info{ position:fixed; bottom:8px; left:8px; color:#fff; opacity:0.8; font-size:12px; }
+    .info{
+      position:fixed;
+      bottom:8px;
+      left:8px;
+      color:#fff;
+      opacity:0.8;
+      font-size:12px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Dateiname: agenda.png (muss im Repo liegen) -->
-    <img src="agenda.png" alt="Wochen-Agenda" class="agenda-img" />
+    <img id="agendaImg" src="agenda.png" alt="Wochen-Agenda" class="agenda-img" />
   </div>
-  <div class="info">Ansicht: Wochen‑Agenda</div>
+  <div class="info" id="infoText">Ansicht: agenda.png</div>
+
+  <script>
+    // Optional: Seite regelmäßig neu laden (hilft bei TV-Browsern & Caching)
+    const PAGE_RELOAD_MS = 10 * 60 * 1000; // alle 10 Minuten
+
+    const img = document.getElementById("agendaImg");
+    const info = document.getElementById("infoText");
+
+    // Cache-Buster: erzwingt das Laden der neuesten Datei nach Upload/Update
+    function cacheBustedUrl(filename) {
+      return `${filename}?v=${Date.now()}`;
+    }
+
+    function refreshImage() {
+      const filename = "agenda.png";
+      img.src = cacheBustedUrl(filename);
+      info.textContent = "Ansicht: " + filename;
+    }
+
+    // Bild beim Laden direkt “frisch” ziehen
+    refreshImage();
+
+    // Bild regelmäßig aktualisieren (z.B. alle 30 Sekunden)
+    setInterval(refreshImage, 30 * 1000);
+
+    // Optional: kompletter Seiten-Reload als zusätzliche Absicherung
+    if (PAGE_RELOAD_MS > 0) {
+      setInterval(() => location.reload(), PAGE_RELOAD_MS);
+    }
+  </script>
 </body>
 </html>
