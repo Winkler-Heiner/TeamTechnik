@@ -40,33 +40,25 @@
   <div class="info" id="infoText">Ansicht: agenda.png</div>
 
   <script>
-    // Optional: Seite regelmäßig neu laden (hilft bei TV-Browsern & Caching)
-    const PAGE_RELOAD_MS = 10 * 60 * 1000; // alle 10 Minuten
+    // Nur Bild aktualisieren (kein location.reload), damit TV-Zoom i.d.R. erhalten bleibt
+    const IMAGE_REFRESH_MS = 30 * 1000; // alle 30 Sekunden
 
     const img = document.getElementById("agendaImg");
     const info = document.getElementById("infoText");
+    const filename = "agenda.png";
 
-    // Cache-Buster: erzwingt das Laden der neuesten Datei nach Upload/Update
-    function cacheBustedUrl(filename) {
-      return `${filename}?v=${Date.now()}`;
+    function cacheBustedUrl(name) {
+      return `${name}?v=${Date.now()}`;
     }
 
     function refreshImage() {
-      const filename = "agenda.png";
       img.src = cacheBustedUrl(filename);
       info.textContent = "Ansicht: " + filename;
     }
 
-    // Bild beim Laden direkt “frisch” ziehen
+    // Start + Intervall
     refreshImage();
-
-    // Bild regelmäßig aktualisieren (z.B. alle 30 Sekunden)
-    setInterval(refreshImage, 30 * 1000);
-
-    // Optional: kompletter Seiten-Reload als zusätzliche Absicherung
-    if (PAGE_RELOAD_MS > 0) {
-      setInterval(() => location.reload(), PAGE_RELOAD_MS);
-    }
+    setInterval(refreshImage, IMAGE_REFRESH_MS);
   </script>
 </body>
 </html>
